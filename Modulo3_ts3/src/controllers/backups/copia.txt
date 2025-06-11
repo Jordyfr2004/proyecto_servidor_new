@@ -1,0 +1,68 @@
+import { Request, Response } from "express";
+import { Donante } from "../entities/donante";
+import { empresaInfo } from "../entities/empresaInfo";
+import { Ubicacion } from "../entities/Ubicacion";
+
+export const createdonante = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {
+      nombre,
+      apellido,
+      tipo_donante,
+      telefono,
+      correo,
+      password,
+      ubicaciones, // array de ubicaciones [{provincia, ciudad, direccion}]
+      empresa // objeto con info de empresa: { nombre_empresa, ruc, representante_legal }
+    } = req.body;
+
+    const donante = new Donante();
+    donante.nombre = nombre;
+    donante.apellido = apellido;
+    donante.tipo_donante = tipo_donante;
+    donante.telefono = telefono;
+    donante.correo = correo;
+    donante.password = password;
+
+    if (tipo_donante === 'juridico') {
+      const nuevaEmpresa = new empresaInfo();
+      nuevaEmpresa.nombre_empresa = empresa.nombre_empresa;
+      nuevaEmpresa.ruc = empresa.ruc;
+      nuevaEmpresa.representante_legal = `${nombre} ${apellido}`;
+
+      // asociar ubicaciones a empresa
+      nuevaEmpresa.ubicaciones = [];
+      for (const ubicacionData of ubicaciones) {
+        const ubicacion = new Ubicacion();
+        ubicacion.provincia = ubicacionData.provincia;
+        ubicacion.ciudad = ubicacionData.ciudad;
+        ubicacion.direccion = ubicacionData.direccion;
+        ubicacion.empresa = nuevaEmpresa;
+
+        await ubicacion.save();
+        nuevaEmpresa.ubicaciones.push(ubicacion);
+      }
+
+      donante.empresa = nuevaEmpresa;
+    } else {
+      // Donante natural, asociar ubicaciones directamente al donante
+      donante.ubicaciones = [];
+      for (const ubicacionData of ubicaciones) {
+        const ubicacion = new Ubicacion();
+        ubicacion.provincia = ubicacionData.provincia;
+        ubicacion.ciudad = ubicacionData.ciudad;
+        ubicacion.direccion = ubicacionData.direccion;
+        ubicacion.donante = donante;
+
+        await ubicacion.save();
+        donante.ubicaciones.push(ubicacion);
+      }
+    }
+
+    await donante.save();
+    res.status(201).json(donante);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al crear donante" });
+  }
+};
