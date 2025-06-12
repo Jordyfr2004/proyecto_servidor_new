@@ -30,7 +30,7 @@ def crear_entrega_handler(admin_id):
 def crear_revision_handler(admin_id):
     return crear_revision(admin_id)
 
-# Ruta para obtener detalles de un administrador junto con sus revisiones
+# Ruta para obtener detalles de un administrador junto con sus revisiones.
 @admin.route('/admin/<int:admin_id>/detalles', methods=["GET"])
 def obtener_admin_handler(admin_id):
     return obtener_admin_con_revisiones(admin_id)
