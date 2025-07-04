@@ -1,2 +1,19 @@
-Primera carpeta contiene proyecto  realizado en primer parcial
-Segunda carpeta contiene el desarollo del proyecto en este segundo parcial
+# Proyecto
+
+Este repositorio contiene el desarrollo del proyecto a lo largo de dos parciales.
+
+---
+
+## Estructura del Proyecto
+
+### `Primera carpeta`
+
+Esta carpeta contiene el proyecto finalizado que se desarrolló durante el **primer parcial**. 
+
+### `Segunda carpeta`
+
+En esta carpeta se encuentra el desarrollo y las actualizaciones realizadas al proyecto durante el **segundo parcial**.
+
+---
+
+¡Eso es todo!
