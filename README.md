@@ -19,7 +19,11 @@ En esta carpeta se encuentra el desarrollo y las actualizaciones realizadas al p
 ### `Colaboradores`
 
 Cristopher Andres Garcia Lucas
+
+
 Jordy Alexander Franco Rosado
+
+
 Jeremy Johnayker Vera Mero 
 
 ---
