@@ -22,8 +22,6 @@ Cristopher Andres Garcia Lucas
 Jordy Alexander Franco Rosado
 Jeremy Johnayker Vera Mero 
 
-
 ---
-
 
 ¡Eso es todo!
