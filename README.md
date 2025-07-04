@@ -1,1 +1,1 @@
-primera carpeta contiene protecto  realizado en primer parcial
+primera carpeta contiene proyecto  realizado en primer parcial
