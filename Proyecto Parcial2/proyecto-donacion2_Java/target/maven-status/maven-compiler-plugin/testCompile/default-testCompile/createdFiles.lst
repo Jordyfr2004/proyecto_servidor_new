@@ -1,0 +1,6 @@
+com\modulo2\service\HistorialReceptorServiceTest.class
+com\modulo2\service\ReceptorServiceTest.class
+com\modulo2\service\DireccionServiceTest.class
+com\modulo2\service\DonacionServiceTest.class
+com\modulo2\service\SolicitudServiceTest.class
+com\modulo2\service\EntregaServiceTest.class
