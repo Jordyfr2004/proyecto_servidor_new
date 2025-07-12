@@ -1,0 +1,9 @@
+com\donacion\modulo2\entity\Receptor.class
+com\donacion\modulo2\exception\RecursoNoEncontradoException.class
+com\donacion\modulo2\service\impl\ReceptorServiceImpl.class
+com\donacion\modulo2\service\ReceptorService.class
+com\donacion\modulo2\controller\ReceptorController.class
+com\donacion\modulo2\exception\GlobalExceptionHandler.class
+com\donacion\modulo2\dto\ReceptorDTO.class
+com\donacion\modulo2\Modulo2DonacionApplication.class
+com\donacion\modulo2\repository\ReceptorRepository.class
