@@ -7,9 +7,12 @@ import { resolvers as ProductoResolvers } from './modulo1_TS/producto/producto.r
 import { resolvers as TipoProductoResolvers } from './modulo1_TS/tipo-producto/tipo-producto.resolver';
 import { resolvers as EstadoDonacionResolvers } from './modulo1_TS/estado-donacion/estado-donacion.resolver';
 
-
-
-
+// Resolvers del Módulo 2 
+import { resolvers as ReceptorResolvers } from './modulo2_TS/receptor/receptor.resolver';
+import { resolvers as SolicitudResolvers } from './modulo2_TS/solicitud/solicitud.resolver';
+import { resolvers as EntregaResolvers } from './modulo2_TS/entrega/entrega.resolver';
+import { resolvers as DireccionResolvers } from './modulo2_TS/direccion/direccion.resolver';
+import { resolvers as HistorialReceptorResolvers } from './modulo2_TS/historial-receptor/historial-receptor.resolver';
 
 // Resolvers del módulo 3
 import { resolvers as AdministradoresResolvers } from './modulo3_PY/administrador/administrador.resolver';
@@ -25,6 +28,11 @@ export const resolvers = mergeResolvers([
   ProductoResolvers,
   TipoProductoResolvers,
   EstadoDonacionResolvers,
+  ReceptorResolvers,
+  SolicitudResolvers,
+  EntregaResolvers,
+  DireccionResolvers,
+  HistorialReceptorResolvers,
   AdministradoresResolvers,
   AgendasResolvers,
   EventosResolvers,

@@ -7,9 +7,12 @@ import { typeDefs as Producto } from './modulo1_TS/producto/producto.schema';
 import { typeDefs as TipoProducto } from './modulo1_TS/tipo-producto/tipo-producto.schema';
 import { typeDefs as EstadoDonacion } from './modulo1_TS/estado-donacion/estado-donacion.schema';
 
-
-
-
+// Entidades del Módulo 2 
+import { receptorTypeDefs } from './modulo2_TS/receptor/receptor.schema';
+import { solicitudTypeDefs } from './modulo2_TS/solicitud/solicitud.schema';
+import { entregaTypeDefs } from './modulo2_TS/entrega/entrega.schema';
+import { direccionTypeDefs } from './modulo2_TS/direccion/direccion.schema';
+import { historialReceptorTypeDefs } from './modulo2_TS/historial-receptor/historial-receptor.schema';
 
 // Entidades del módulo 3 python
 import { typeDefs as Administrador } from './modulo3_PY/administrador/administrador.schema'
@@ -24,6 +27,11 @@ export const typeDefs = mergeTypeDefs([
   Producto,
   TipoProducto,
   EstadoDonacion,
+  receptorTypeDefs,
+  solicitudTypeDefs,
+  entregaTypeDefs,
+  direccionTypeDefs,
+  historialReceptorTypeDefs,
   Administrador,
   Agendas,
   Eventos,
