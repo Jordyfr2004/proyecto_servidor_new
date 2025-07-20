@@ -1,6 +1,7 @@
-from app.Domain.entities.agenda import agendaEntitie as AgendaEntitie
-from app.Infrastructure.Models.Agenda import agenda as AgendaOrm
+from app.Domain.entities.agenda.agendaEntitie import Agenda as AgendaEntitie
+from app.Infrastructure.Models.Agenda.agenda import Agenda as AgendaOrm
 from app.Domain.entities.agenda.agendaEntitie import Agenda
+from datetime import datetime
 class AgendaMapper:
 
     @staticmethod
@@ -18,7 +19,7 @@ class AgendaMapper:
         return AgendaOrm(
             titulo= agenda_entitie.titulo,
             descripcion= agenda_entitie.descripcion,
-            fecha= agenda_entitie.fecha,
+            fecha=datetime.strptime(agenda_entitie.fecha, "%Y-%m-%d").date(),
             id_admin= agenda_entitie.admin_id
         )
     

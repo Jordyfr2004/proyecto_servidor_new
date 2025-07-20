@@ -7,5 +7,6 @@ class Evento(db.Model):
     id_tipo_evento = db.Column(db.Integer, db.ForeignKey('tipoEvento.id'), nullable=False)  # referencia a tipoEvento
     descripcion = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, descripcion):
+    def __init__(self, descripcion, id_tipo_evento):
         self.descripcion = descripcion
+        self.id_tipo_evento=id_tipo_evento

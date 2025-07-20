@@ -23,7 +23,7 @@ class EventoRepository(EventoInterface):
         evento_orm = EventoORM.query.get(evento.id)
         if evento_orm:
             evento_orm.descripcion = evento.descripcion
-            evento_orm.id_tipo_evento = evento.id_tipo_evento
+            evento_orm.id_tipo_evento = evento.tipo_evento_id
             db.session.commit()
         return EventoMapper.to_domain(evento_orm)
 

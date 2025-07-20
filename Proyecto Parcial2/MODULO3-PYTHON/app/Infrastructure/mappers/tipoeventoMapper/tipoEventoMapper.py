@@ -1,5 +1,5 @@
-from app.Domain.entities.tipoEvento import tipoEventoEntitie as TipoEventoEntitie
-from app.Infrastructure.Models.TipoEvento import tipoEvento as TipoEventoORM
+from app.Domain.entities.tipoEvento.tipoEventoEntitie import TipoEvento as TipoEventoEntitie
+from app.Infrastructure.Models.TipoEvento.tipoEvento import TipoEvento as TipoEventoORM
 from app.Infrastructure.mappers.eventoMapper.eventoMapper import EventoMapper
 from app.Infrastructure.Models.TipoEvento.tipoEvento import TipoEvento
 

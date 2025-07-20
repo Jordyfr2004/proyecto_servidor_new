@@ -9,7 +9,8 @@ class Agenda(db.Model):
     descripcion = db.Column(db.String(50), nullable=True)
     fecha = db.Column(db.Date, nullable=False)
 
-    def __init__(self, titulo, descripcion, fecha):
+    def __init__(self, titulo, descripcion, fecha, id_admin):
         self.titulo = titulo
         self.descripcion = descripcion
         self.fecha = fecha
+        self.id_admin = id_admin

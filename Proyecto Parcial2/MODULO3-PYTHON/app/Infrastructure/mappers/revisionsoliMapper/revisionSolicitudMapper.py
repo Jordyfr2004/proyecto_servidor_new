@@ -1,5 +1,5 @@
-from app.Domain.entities.revisionSolicitud import revisionSolicitudEntitie as RevisionEntitie
-from app.Infrastructure.Models.RevisionSolicitud import revisionSolicitud as RevisionORM
+from app.Domain.entities.revisionSolicitud.revisionSolicitudEntitie import RevisionSolicitud as RevisionEntitie
+from app.Infrastructure.Models.RevisionSolicitud.revisionSolicitud import RevisionSolicitud as RevisionORM
 from app.Infrastructure.Models.RevisionSolicitud.revisionSolicitud import RevisionSolicitud
 
 

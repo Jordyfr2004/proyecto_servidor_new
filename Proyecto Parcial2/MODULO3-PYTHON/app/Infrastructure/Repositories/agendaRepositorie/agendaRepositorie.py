@@ -25,7 +25,7 @@ class AgendaRepository(AgendaInterface):
             agenda_orm.titulo = agenda.titulo
             agenda_orm.descripcion = agenda.descripcion
             agenda_orm.fecha = agenda.fecha
-            agenda_orm.id_admin = agenda.id_admin
+            agenda_orm.id_admin = agenda.admin_id
             db.session.commit()
         return AgendaMapper.to_domain(agenda_orm)
 

@@ -1,5 +1,4 @@
-
-from app.Infrastructure.Models.Administrador import administrador as AdminORM
+from app.Infrastructure.Models.Administrador.administrador import Admin as AdminORM
 from app.Infrastructure.mappers.agendaMapper.agendaMapper import AgendaMapper
 from app.Infrastructure.mappers.revisionsoliMapper.revisionSolicitudMapper import RevisionSolicitudMapper
 from app.Infrastructure.mappers.tipoeventoMapper.tipoEventoMapper import TipoEventoMapper

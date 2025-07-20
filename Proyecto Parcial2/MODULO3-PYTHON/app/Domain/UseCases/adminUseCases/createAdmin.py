@@ -1,3 +1,4 @@
+from app.Domain.Dtos.createAdminDto.createAdminDto import CreateAdminDTO
 from app.Domain.entities.administrador.adminEntitie import Admin
 from app.Domain.Interfaces.adminInterfaz.adminterfaz import AdminInterface
 
@@ -6,6 +7,11 @@ class CreateAdminUseCase:
         self.admin_repository = admin_repository
 
 
-    def execute(self, nombre: str, usuario: str, correo: str, password: str) -> Admin:
-        nuevo_admin= Admin(nombre= nombre, usuario=usuario, correo=correo, password=password )
+    def execute(self, dto: CreateAdminDTO) -> Admin:
+        nuevo_admin= Admin(
+            nombre=dto.nombre,
+            usuario=dto.usuario,
+            correo=dto.correo,
+            password=dto.password
+        )
         return self.admin_repository.create(nuevo_admin)

@@ -1,3 +1,4 @@
+from app.Domain.Dtos.createAgendaDto.updateAgendaDto import UpdateAgendaDTO
 from app.Domain.Interfaces.agendainterfaz.agendainterfaz import AgendaInterface
 from app.Domain.entities.agenda.agendaEntitie import Agenda
 
@@ -6,13 +7,13 @@ class UpdateAgendaUseCase:
         self.agenda_repository = agenda_repository
 
 
-    def execute(self, agenda_id: int, titulo: str, descripcion: str, fecha: str, id_admin: int) -> Agenda:
+    def execute(self, dto: UpdateAgendaDTO) -> Agenda:
         agenda_actualizada = Agenda(
-            id=agenda_id,
-            titulo=titulo,
-            descripcion=descripcion,
-            fecha=fecha,
-            id_admin=id_admin
+            id=dto.id,
+            titulo=dto.titulo,
+            descripcion=dto.descripcion,
+            fecha=dto.fecha,
+            admin_id=dto.admin_id
         )
 
         return self.agenda_repository.update(agenda_actualizada)

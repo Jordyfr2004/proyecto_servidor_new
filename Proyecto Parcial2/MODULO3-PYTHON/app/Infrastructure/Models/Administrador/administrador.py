@@ -11,7 +11,7 @@ class Admin(db.Model):
 
     agendas = db.relationship('Agenda', backref='admin', lazy= True)
     revisiones = db.relationship('RevisionSolicitud', backref='admin', lazy=True)
-    tipos_r = db.relationship('tipoEvento', backref='admin', lazy= True)
+    tipos_r = db.relationship('TipoEvento', backref='admin', lazy= True)
 
     def __init__(self,nombre,usuario,correo,password):
         self.nombre = nombre

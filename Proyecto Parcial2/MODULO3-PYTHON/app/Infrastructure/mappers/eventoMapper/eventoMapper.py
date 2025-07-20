@@ -1,5 +1,5 @@
-from app.Domain.entities.evento import eventoEntitie as EventoEntitie
-from app.Infrastructure.Models.Evento import evento as EventoORM
+from app.Domain.entities.evento.eventoEntitie import Evento as EventoEntitie
+from app.Infrastructure.Models.Evento.evento import Evento as EventoORM
 from app.Infrastructure.Models.Evento.evento import Evento
 
 class EventoMapper:
@@ -9,14 +9,14 @@ class EventoMapper:
         return EventoEntitie(
             id=evento_orm.id,
             descripcion=evento_orm.descripcion,
-            tipo_evento_id=evento_orm.id_evento
+            tipo_evento_id=evento_orm.id_tipo_evento
         )
     
     @staticmethod
     def to_orm(evento_entitie: EventoEntitie) -> EventoORM:
         return EventoORM(
             descripcion=evento_entitie.descripcion,
-            id_evento=evento_entitie.tipo_evento_id
+            id_tipo_evento=evento_entitie.tipo_evento_id
         )
     
     @staticmethod

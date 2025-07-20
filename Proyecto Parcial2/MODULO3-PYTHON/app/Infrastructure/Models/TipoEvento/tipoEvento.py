@@ -9,5 +9,6 @@ class TipoEvento(db.Model):
 
     tiposs = db.relationship('Evento', backref='tipoEvento', lazy=True)
 
-    def __init__(self, tipo):
+    def __init__(self, tipo, id_admin):
         self.tipo = tipo
+        self.id_admin= id_admin

@@ -8,6 +8,7 @@ class RevisionSolicitud(db.Model):
     estado_revision = db.Column(db.String(50), nullable=False)
     observacion = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, estado_revision, observacion):
+    def __init__(self, estado_revision, observacion, id_admin):
         self.estado_revision = estado_revision
         self.observacion = observacion
+        self.id_admin= id_admin

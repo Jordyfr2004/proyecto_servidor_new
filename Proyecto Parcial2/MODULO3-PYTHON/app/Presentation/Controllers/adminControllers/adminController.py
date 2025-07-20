@@ -23,19 +23,14 @@ class AdminController:
         )
 
         use_case = CreateAdminUseCase(self.repository)
-        admin = use_case.execute(
-            nombre=dto.nombre,
-            usuario=dto.usuario,
-            correo=dto.correo,
-            password=dto.password
-        )
+        admin = use_case.execute(dto)
 
         return jsonify({
             "id": admin.id,
             "nombre": admin.nombre,
             "usuario": admin.usuario,
             "correo": admin.correo
-        })
+        }),201
 
     def get_all_admins(self):
         use_case = GetAdminUseCase(self.repository)
