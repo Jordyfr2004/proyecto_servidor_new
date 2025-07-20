@@ -1,1 +1,0 @@
-Desarrollo del proyecto en segundo parcial
