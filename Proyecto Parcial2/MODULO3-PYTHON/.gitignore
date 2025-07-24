@@ -1,0 +1,17 @@
+# variables sensibles
+.env
+
+# Entorno virtual
+venv/
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+
+# Logs o archivos temporales
+*.log
+*.sqlite3
+
+# Archivos de configuración de editores
+.vscode/
+.idea/
