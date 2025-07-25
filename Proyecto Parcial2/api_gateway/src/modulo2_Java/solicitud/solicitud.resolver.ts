@@ -1,6 +1,9 @@
-import axios from 'axios';
 
-const API_URL = 'http://localhost:8082/api/solicitudes';
+import axios from 'axios';
+import 'dotenv/config';
+
+const API_JAVA_URL = process.env.API_JAVA_URL as string;
+const API_URL = `${API_JAVA_URL}/solicitudes`;
 
 export const resolvers = {
   Query: {

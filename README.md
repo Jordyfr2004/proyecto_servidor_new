@@ -8,7 +8,7 @@ Este repositorio contiene el desarrollo del proyecto a lo largo de dos parciales
 
 ### `Primera carpeta`
 
-Esta carpeta contiene el proyecto finalizado que se desarrolló durante el **primer parcial**. 
+Esta carpeta contiene el proyecto finalizado que se desarrolló durante el **primer parcial**.
 
 ### `Segunda carpeta`
 
@@ -20,11 +20,9 @@ En esta carpeta se encuentra el desarrollo y las actualizaciones realizadas al p
 
 Cristopher Andres Garcia Lucas
 
-
 Jordy Alexander Franco Rosado
 
-
-Jeremy Johnayker Vera Mero 
+Jereny Johnayker Vera Mero
 
 ---
 
