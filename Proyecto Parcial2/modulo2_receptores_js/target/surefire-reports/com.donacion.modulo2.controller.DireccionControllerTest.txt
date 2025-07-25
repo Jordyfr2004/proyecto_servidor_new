@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.donacion.modulo2.controller.DireccionControllerTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.839 s -- in com.donacion.modulo2.controller.DireccionControllerTest
