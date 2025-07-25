@@ -135,4 +135,54 @@ public class EntregaController {
         entregaService.eliminarEntrega(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Buscar entregas por solicitud")
+    @GetMapping("/solicitud/{solicitudId}")
+    public ResponseEntity<List<EntregaDTO>> buscarPorSolicitud(@PathVariable UUID solicitudId) {
+        return ResponseEntity.ok(entregaService.obtenerPorSolicitud(solicitudId));
+    }
+
+    @Operation(summary = "Buscar entregas por donación")
+    @GetMapping("/donacion/{idDonacion}")
+    public ResponseEntity<List<EntregaDTO>> buscarPorDonacion(@PathVariable UUID idDonacion) {
+        return ResponseEntity.ok(entregaService.obtenerPorDonacion(idDonacion));
+    }
+
+    @Operation(summary = "Buscar entregas por estado")
+    @GetMapping("/estado/{estadoEntrega}")
+    public ResponseEntity<List<EntregaDTO>> buscarPorEstado(@PathVariable String estadoEntrega) {
+        return ResponseEntity.ok(entregaService.obtenerPorEstado(estadoEntrega));
+    }
+
+    @Operation(summary = "Buscar entregas por receptor")
+    @GetMapping("/receptor/{receptorId}")
+    public ResponseEntity<List<EntregaDTO>> buscarPorReceptor(@PathVariable UUID receptorId) {
+        return ResponseEntity.ok(entregaService.obtenerPorReceptor(receptorId));
+    }
+
+    @Operation(summary = "Obtener última entrega de una solicitud")
+    @GetMapping("/solicitud/{solicitudId}/ultima")
+    public ResponseEntity<EntregaDTO> obtenerUltimaEntregaDeSolicitud(@PathVariable UUID solicitudId) {
+        return ResponseEntity.ok(entregaService.obtenerUltimaEntregaDeSolicitud(solicitudId));
+    }
+
+    @Operation(summary = "Cambiar estado de una entrega")
+    @PutMapping("/{id}/estado/{nuevoEstado}")
+    public ResponseEntity<EntregaDTO> cambiarEstado(
+            @PathVariable UUID id, 
+            @PathVariable String nuevoEstado) {
+        return ResponseEntity.ok(entregaService.cambiarEstado(id, nuevoEstado));
+    }
+
+    @Operation(summary = "Completar una entrega")
+    @PutMapping("/{id}/completar")
+    public ResponseEntity<EntregaDTO> completarEntrega(@PathVariable UUID id) {
+        return ResponseEntity.ok(entregaService.completarEntrega(id));
+    }
+
+    @Operation(summary = "Contar entregas por estado")
+    @GetMapping("/contar/estado/{estadoEntrega}")
+    public ResponseEntity<Long> contarPorEstado(@PathVariable String estadoEntrega) {
+        return ResponseEntity.ok(entregaService.contarPorEstado(estadoEntrega));
+    }
 }

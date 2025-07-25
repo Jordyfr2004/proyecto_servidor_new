@@ -34,8 +34,14 @@ public class ReceptorServiceImpl implements ReceptorService {
     @Override
     @Transactional
     public ReceptorDTO crearReceptor(ReceptorDTO dto) {
+        // Validar que el correo no exista
         if (receptorRepository.findByCorreo(dto.getCorreo()).isPresent()) {
             throw new IllegalArgumentException("Ya existe un receptor registrado con el correo: " + dto.getCorreo());
+        }
+
+        // Validar que la cédula no exista
+        if (receptorRepository.findByCedula(dto.getCedula()).isPresent()) {
+            throw new IllegalArgumentException("Ya existe un receptor registrado con la cédula: " + dto.getCedula());
         }
 
         Receptor nuevoReceptor = mapToEntity(dto);
@@ -87,7 +93,6 @@ public class ReceptorServiceImpl implements ReceptorService {
         receptorExistente.setNombre(dto.getNombre());
         receptorExistente.setCedula(dto.getCedula());
         receptorExistente.setTelefono(dto.getTelefono());
-        receptorExistente.setDireccion(dto.getDireccion());
         receptorExistente.setCorreo(dto.getCorreo());
 
         Receptor actualizado = receptorRepository.save(receptorExistente);
@@ -120,9 +125,66 @@ public class ReceptorServiceImpl implements ReceptorService {
         return receptorRepository.findByCorreo(correo).isPresent();
     }
 
+    /**
+     * Verifica si una cédula ya está registrada.
+     *
+     * @param cedula cédula a verificar.
+     * @return true si existe, false si no.
+     */
+    @Override
+    public boolean existePorCedula(String cedula) {
+        return receptorRepository.findByCedula(cedula).isPresent();
+    }
+
+    /**
+     * Busca un receptor por su correo electrónico.
+     *
+     * @param correo correo del receptor.
+     * @return ReceptorDTO si existe.
+     */
+    @Override
+    public ReceptorDTO obtenerPorCorreo(String correo) {
+        Receptor receptor = receptorRepository.findByCorreo(correo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró receptor con correo: " + correo));
+        return mapToDTO(receptor);
+    }
+
+    /**
+     * Busca un receptor por su cédula.
+     *
+     * @param cedula cédula del receptor.
+     * @return ReceptorDTO si existe.
+     */
+    @Override
+    public ReceptorDTO obtenerPorCedula(String cedula) {
+        Receptor receptor = receptorRepository.findByCedula(cedula)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró receptor con cédula: " + cedula));
+        return mapToDTO(receptor);
+    }
+
     // ====================================================
     // Métodos auxiliares para convertir entre DTO y entidad
     // ====================================================
+
+    /**
+     * Método público para crear un DTO básico sin relaciones (para respuestas anidadas)
+     */
+    public ReceptorDTO mapToBasicDTO(Receptor receptor) {
+        ReceptorDTO dto = new ReceptorDTO();
+        dto.setIdReceptor(receptor.getIdReceptor());
+        dto.setNombre(receptor.getNombre());
+        dto.setCedula(receptor.getCedula());
+        dto.setTelefono(receptor.getTelefono());
+        dto.setDireccion(""); // Temporal - evitar problemas con relaciones LAZY
+        dto.setCorreo(receptor.getCorreo());
+        
+        // No incluir relaciones para evitar problemas de serialización
+        dto.setIdsDirecciones(null);
+        dto.setIdsSolicitudes(null);
+        dto.setIdsHistorial(null);
+        
+        return dto;
+    }
 
     private ReceptorDTO mapToDTO(Receptor receptor) {
         ReceptorDTO dto = new ReceptorDTO();
@@ -130,8 +192,14 @@ public class ReceptorServiceImpl implements ReceptorService {
         dto.setNombre(receptor.getNombre());
         dto.setCedula(receptor.getCedula());
         dto.setTelefono(receptor.getTelefono());
-        dto.setDireccion(receptor.getDireccion());
+        dto.setDireccion(""); // Temporal - evitar problemas con relaciones LAZY
         dto.setCorreo(receptor.getCorreo());
+        
+        // Mapear las relaciones OneToMany como null temporalmente para evitar problemas LAZY
+        dto.setIdsDirecciones(null);
+        dto.setIdsSolicitudes(null);
+        dto.setIdsHistorial(null);
+        
         return dto;
     }
 
@@ -141,7 +209,8 @@ public class ReceptorServiceImpl implements ReceptorService {
         receptor.setNombre(dto.getNombre());
         receptor.setCedula(dto.getCedula());
         receptor.setTelefono(dto.getTelefono());
-        receptor.setDireccion(dto.getDireccion());
+        // TODO: Crear entidad Direccion separada si se proporciona dirección
+        // Por ahora no creamos la dirección automáticamente
         receptor.setCorreo(dto.getCorreo());
         return receptor;
     }

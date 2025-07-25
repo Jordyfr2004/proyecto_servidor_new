@@ -1,5 +1,6 @@
 package com.donacion.modulo2.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,4 +52,63 @@ public interface SolicitudService {
      * @param id UUID de la solicitud a eliminar.
      */
     void eliminarSolicitud(UUID id);
+
+    /**
+     * Busca solicitudes por estado.
+     *
+     * @param estado el estado a buscar
+     * @return lista de solicitudes con ese estado
+     */
+    List<SolicitudDTO> obtenerPorEstado(String estado);
+
+    /**
+     * Busca solicitudes por receptor.
+     *
+     * @param receptorId el ID del receptor
+     * @return lista de solicitudes del receptor
+     */
+    List<SolicitudDTO> obtenerPorReceptor(UUID receptorId);
+
+    /**
+     * Busca solicitudes por tipo de donación.
+     *
+     * @param tipoDonacion el tipo de donación
+     * @return lista de solicitudes de ese tipo
+     */
+    List<SolicitudDTO> obtenerPorTipoDonacion(String tipoDonacion);
+
+    /**
+     * Busca solicitudes en un rango de fechas.
+     *
+     * @param fechaInicio fecha de inicio
+     * @param fechaFin fecha de fin
+     * @return lista de solicitudes en ese rango
+     */
+    List<SolicitudDTO> obtenerPorRangoFechas(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+
+    /**
+     * Cambia el estado de una solicitud.
+     *
+     * @param id el ID de la solicitud
+     * @param nuevoEstado el nuevo estado
+     * @return solicitud actualizada
+     */
+    SolicitudDTO cambiarEstado(UUID id, String nuevoEstado);
+
+    /**
+     * Cuenta solicitudes por estado.
+     *
+     * @param estado el estado a contar
+     * @return número de solicitudes
+     */
+    long contarPorEstado(String estado);
+
+    /**
+     * Busca solicitudes por receptor y estado.
+     *
+     * @param receptorId el ID del receptor
+     * @param estado el estado
+     * @return lista de solicitudes filtradas
+     */
+    List<SolicitudDTO> obtenerPorReceptorYEstado(UUID receptorId, String estado);
 }

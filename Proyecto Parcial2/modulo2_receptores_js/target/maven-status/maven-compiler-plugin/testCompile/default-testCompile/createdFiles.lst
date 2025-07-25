@@ -1,0 +1,9 @@
+com\donacion\modulo2\controller\ReceptorControllerTest.class
+com\donacion\modulo2\service\HistorialReceptorServiceTest.class
+com\donacion\modulo2\controller\DireccionControllerTest.class
+com\donacion\modulo2\service\DireccionServiceTest.class
+com\donacion\modulo2\controller\SolicitudControllerTest.class
+com\donacion\modulo2\service\SolicitudServiceTest.class
+com\donacion\modulo2\service\EntregaServiceTest.class
+com\donacion\modulo2\controller\HistorialReceptorControllerTest.class
+com\donacion\modulo2\service\ReceptorServiceTest.class

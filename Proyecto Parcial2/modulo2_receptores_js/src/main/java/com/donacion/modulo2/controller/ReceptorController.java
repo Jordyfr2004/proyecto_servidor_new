@@ -127,4 +127,36 @@ public class ReceptorController {
         boolean existe = receptorService.existePorCorreo(correo);
         return ResponseEntity.ok(existe);
     }
+
+    @Operation(summary = "Verificar si una cédula ya existe", description = "Valida si una cédula ya está registrada en la base de datos")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Resultado de la verificación (true o false)")
+    })
+    @GetMapping("/existe-cedula")
+    public ResponseEntity<Boolean> existePorCedula(@RequestParam String cedula) {
+        boolean existe = receptorService.existePorCedula(cedula);
+        return ResponseEntity.ok(existe);
+    }
+
+    @Operation(summary = "Buscar receptor por correo", description = "Busca un receptor por su correo electrónico")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Receptor encontrado"),
+        @ApiResponse(responseCode = "404", description = "Receptor no encontrado")
+    })
+    @GetMapping("/por-correo")
+    public ResponseEntity<ReceptorDTO> obtenerPorCorreo(@RequestParam String correo) {
+        ReceptorDTO receptor = receptorService.obtenerPorCorreo(correo);
+        return ResponseEntity.ok(receptor);
+    }
+
+    @Operation(summary = "Buscar receptor por cédula", description = "Busca un receptor por su cédula")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Receptor encontrado"),
+        @ApiResponse(responseCode = "404", description = "Receptor no encontrado")
+    })
+    @GetMapping("/por-cedula")
+    public ResponseEntity<ReceptorDTO> obtenerPorCedula(@RequestParam String cedula) {
+        ReceptorDTO receptor = receptorService.obtenerPorCedula(cedula);
+        return ResponseEntity.ok(receptor);
+    }
 }

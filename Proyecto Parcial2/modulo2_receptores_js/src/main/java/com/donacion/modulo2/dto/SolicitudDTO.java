@@ -29,7 +29,10 @@ public class SolicitudDTO {
     private String estado;
 
     @NotNull(message = "El ID del receptor es obligatorio")
-    private UUID idReceptor;
+    private UUID idReceptor; // Para creación/actualización - mantener para compatibilidad
+
+    // Respuesta anidada - información completa del receptor
+    private ReceptorDTO receptor;
 
     // Getters y Setters
 
@@ -79,5 +82,13 @@ public class SolicitudDTO {
 
     public void setIdReceptor(UUID idReceptor) {
         this.idReceptor = idReceptor;
+    }
+
+    public ReceptorDTO getReceptor() {
+        return receptor;
+    }
+
+    public void setReceptor(ReceptorDTO receptor) {
+        this.receptor = receptor;
     }
 }

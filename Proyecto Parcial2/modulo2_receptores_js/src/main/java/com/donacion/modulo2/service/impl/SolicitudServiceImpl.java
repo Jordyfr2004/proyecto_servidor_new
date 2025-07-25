@@ -1,5 +1,6 @@
 package com.donacion.modulo2.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,6 +27,9 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Autowired
     private ReceptorRepository receptorRepository;
 
+    @Autowired
+    private ReceptorServiceImpl receptorService;
+
     @Override
     @Transactional
     public SolicitudDTO crearSolicitud(SolicitudDTO dto) {
@@ -45,10 +49,19 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     @Override
     public List<SolicitudDTO> obtenerTodas() {
-        return solicitudRepository.findAll()
-                .stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+        // TEMPORAL: Usar consulta simple para debugging
+        try {
+            List<Solicitud> solicitudes = solicitudRepository.findAll();
+            System.out.println("✅ Encontradas " + solicitudes.size() + " solicitudes");
+            
+            return solicitudes.stream()
+                    .map(this::mapToDTOSimple)  // Usar mapeo simple
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.err.println("❌ Error en obtenerTodas: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @Override
@@ -85,6 +98,82 @@ public class SolicitudServiceImpl implements SolicitudService {
         solicitudRepository.delete(solicitud);
     }
 
+    @Override
+    public List<SolicitudDTO> obtenerPorEstado(String estado) {
+        return solicitudRepository.findByEstado(estado)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SolicitudDTO> obtenerPorReceptor(UUID receptorId) {
+        return solicitudRepository.findByReceptor_IdReceptor(receptorId)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SolicitudDTO> obtenerPorTipoDonacion(String tipoDonacion) {
+        return solicitudRepository.findByTipoDonacion(tipoDonacion)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SolicitudDTO> obtenerPorRangoFechas(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        return solicitudRepository.findByFechaSolicitudBetween(fechaInicio, fechaFin)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public SolicitudDTO cambiarEstado(UUID id, String nuevoEstado) {
+        Solicitud solicitud = solicitudRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Solicitud no encontrada con ID: " + id));
+        
+        solicitud.setEstado(nuevoEstado);
+        Solicitud actualizada = solicitudRepository.save(solicitud);
+        return mapToDTO(actualizada);
+    }
+
+    @Override
+    public long contarPorEstado(String estado) {
+        return solicitudRepository.countByEstado(estado);
+    }
+
+    @Override
+    public List<SolicitudDTO> obtenerPorReceptorYEstado(UUID receptorId, String estado) {
+        return solicitudRepository.findByReceptor_IdReceptorAndEstado(receptorId, estado)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Método auxiliar SIMPLE para mapear entidad a DTO (SIN respuesta anidada)
+    private SolicitudDTO mapToDTOSimple(Solicitud solicitud) {
+        SolicitudDTO dto = new SolicitudDTO();
+        dto.setIdSolicitud(solicitud.getIdSolicitud());
+        dto.setTipoDonacion(solicitud.getTipoDonacion());
+        dto.setDescripcion(solicitud.getDescripcion());
+        dto.setFechaSolicitud(solicitud.getFechaSolicitud());
+        dto.setEstado(solicitud.getEstado());
+        
+        // Solo incluir el ID del receptor, NO el objeto completo
+        try {
+            dto.setIdReceptor(solicitud.getReceptor().getIdReceptor());
+        } catch (Exception e) {
+            System.err.println("⚠️ Error accediendo a receptor: " + e.getMessage());
+            dto.setIdReceptor(null);
+        }
+        
+        return dto;
+    }
+
     // Método auxiliar para convertir una entidad en DTO
     private SolicitudDTO mapToDTO(Solicitud solicitud) {
         SolicitudDTO dto = new SolicitudDTO();
@@ -93,7 +182,34 @@ public class SolicitudServiceImpl implements SolicitudService {
         dto.setDescripcion(solicitud.getDescripcion());
         dto.setFechaSolicitud(solicitud.getFechaSolicitud());
         dto.setEstado(solicitud.getEstado());
+        
+        // Mantener el ID para compatibilidad con creación/actualización
         dto.setIdReceptor(solicitud.getReceptor().getIdReceptor());
+        
+        // RESPUESTA ANIDADA: Incluir información completa del receptor
+        // TEMPORALMENTE COMENTADO PARA DEBUGGING
+        // dto.setReceptor(receptorService.mapToBasicDTO(solicitud.getReceptor()));
+        
+        return dto;
+    }
+
+    /**
+     * Método público para crear un DTO con respuesta anidada (para otras entidades)
+     */
+    public SolicitudDTO mapToBasicDTO(Solicitud solicitud) {
+        SolicitudDTO dto = new SolicitudDTO();
+        dto.setIdSolicitud(solicitud.getIdSolicitud());
+        dto.setTipoDonacion(solicitud.getTipoDonacion());
+        dto.setDescripcion(solicitud.getDescripcion());
+        dto.setFechaSolicitud(solicitud.getFechaSolicitud());
+        dto.setEstado(solicitud.getEstado());
+        
+        // Mantener el ID para compatibilidad
+        dto.setIdReceptor(solicitud.getReceptor().getIdReceptor());
+        
+        // RESPUESTA ANIDADA: Incluir información completa del receptor
+        dto.setReceptor(receptorService.mapToBasicDTO(solicitud.getReceptor()));
+        
         return dto;
     }
 }

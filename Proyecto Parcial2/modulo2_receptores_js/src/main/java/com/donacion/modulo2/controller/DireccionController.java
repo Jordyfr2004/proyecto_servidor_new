@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.donacion.modulo2.dto.DireccionDTO;
@@ -53,13 +54,14 @@ public class DireccionController {
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = DireccionDTO.class),
-                examples = @ExampleObject(value = "{ \"ciudad\": \"Manta\", \"provincia\": \"Manabí\", \"callePrincipal\": \"Av. 24\", \"calleSecundaria\": \"Calle J\", \"referencia\": \"Frente al parque\", \"receptorId\": \"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\" }")
+                examples = @ExampleObject(value = "{ \"calle\": \"Av. 24 de Mayo y Calle J\", \"ciudad\": \"Manta\", \"provincia\": \"Manabí\", \"referencia\": \"Frente al parque central\", \"codigoPostal\": \"130802\", \"idReceptor\": \"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\" }")
             )
         )
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Dirección creada exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+        @ApiResponse(responseCode = "404", description = "Receptor no encontrado"),
         @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<DireccionDTO> crearDireccion(@Valid @org.springframework.web.bind.annotation.RequestBody DireccionDTO direccionDTO) {
@@ -105,7 +107,7 @@ public class DireccionController {
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = DireccionDTO.class),
-                examples = @ExampleObject(value = "{ \"ciudad\": \"Portoviejo\", \"provincia\": \"Manabí\", \"callePrincipal\": \"Av. América\", \"calleSecundaria\": \"Calle 15\", \"referencia\": \"Cerca del colegio\", \"receptorId\": \"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\" }")
+                examples = @ExampleObject(value = "{ \"calle\": \"Av. América y Calle 15\", \"ciudad\": \"Portoviejo\", \"provincia\": \"Manabí\", \"referencia\": \"Cerca del colegio San José\", \"codigoPostal\": \"130101\", \"idReceptor\": \"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\" }")
             )
         )
     )
@@ -133,5 +135,144 @@ public class DireccionController {
     public ResponseEntity<Void> eliminarDireccion(@PathVariable UUID id) {
         direccionService.eliminarDireccion(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Obtiene todas las direcciones de un receptor específico.
+     */
+    @GetMapping("/receptor/{receptorId}")
+    @Operation(summary = "Obtener direcciones por receptor", description = "Retorna todas las direcciones de un receptor específico.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Direcciones del receptor obtenidas correctamente"),
+        @ApiResponse(responseCode = "404", description = "Receptor no encontrado")
+    })
+    public ResponseEntity<List<DireccionDTO>> obtenerDireccionesPorReceptor(@PathVariable UUID receptorId) {
+        return ResponseEntity.ok(direccionService.obtenerDireccionesPorReceptor(receptorId));
+    }
+
+    /**
+     * Obtiene direcciones por ciudad.
+     */
+    @GetMapping("/ciudad/{ciudad}")
+    @Operation(summary = "Obtener direcciones por ciudad", description = "Retorna todas las direcciones de una ciudad específica.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Direcciones por ciudad obtenidas correctamente")
+    })
+    public ResponseEntity<List<DireccionDTO>> obtenerDireccionesPorCiudad(@PathVariable String ciudad) {
+        return ResponseEntity.ok(direccionService.obtenerDireccionesPorCiudad(ciudad));
+    }
+
+    /**
+     * Obtiene direcciones por provincia.
+     */
+    @GetMapping("/provincia/{provincia}")
+    @Operation(summary = "Obtener direcciones por provincia", description = "Retorna todas las direcciones de una provincia específica.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Direcciones por provincia obtenidas correctamente")
+    })
+    public ResponseEntity<List<DireccionDTO>> obtenerDireccionesPorProvincia(@PathVariable String provincia) {
+        return ResponseEntity.ok(direccionService.obtenerDireccionesPorProvincia(provincia));
+    }
+
+    /**
+     * Obtiene la dirección principal de un receptor.
+     */
+    @GetMapping("/receptor/{receptorId}/principal")
+    @Operation(summary = "Obtener dirección principal", description = "Retorna la dirección principal de un receptor específico.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Dirección principal obtenida correctamente"),
+        @ApiResponse(responseCode = "404", description = "Dirección principal no encontrada")
+    })
+    public ResponseEntity<DireccionDTO> obtenerDireccionPrincipal(@PathVariable UUID receptorId) {
+        DireccionDTO direccionPrincipal = direccionService.obtenerDireccionPrincipal(receptorId);
+        if (direccionPrincipal != null) {
+            return ResponseEntity.ok(direccionPrincipal);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Marca una dirección como principal para un receptor.
+     */
+    @PutMapping("/{direccionId}/marcar-principal/{receptorId}")
+    @Operation(summary = "Marcar dirección como principal", description = "Marca una dirección específica como principal para un receptor.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Dirección marcada como principal correctamente"),
+        @ApiResponse(responseCode = "404", description = "Dirección o receptor no encontrado"),
+        @ApiResponse(responseCode = "400", description = "La dirección no pertenece al receptor especificado")
+    })
+    public ResponseEntity<DireccionDTO> marcarComoPrincipal(@PathVariable UUID direccionId, @PathVariable UUID receptorId) {
+        DireccionDTO direccionActualizada = direccionService.marcarComoPrincipal(direccionId, receptorId);
+        return ResponseEntity.ok(direccionActualizada);
+    }
+
+    /**
+     * Obtiene direcciones que tengan coordenadas geográficas.
+     */
+    @GetMapping("/con-coordenadas")
+    @Operation(summary = "Obtener direcciones con coordenadas", description = "Retorna todas las direcciones que tienen coordenadas geográficas.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Direcciones con coordenadas obtenidas correctamente")
+    })
+    public ResponseEntity<List<DireccionDTO>> obtenerDireccionesConCoordenadas() {
+        return ResponseEntity.ok(direccionService.obtenerDireccionesConCoordenadas());
+    }
+
+    /**
+     * Busca direcciones por texto.
+     */
+    @GetMapping("/buscar")
+    @Operation(summary = "Buscar direcciones por texto", description = "Busca direcciones que contengan el texto especificado en cualquier campo.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Búsqueda realizada correctamente")
+    })
+    public ResponseEntity<List<DireccionDTO>> buscarDireccionesPorTexto(@RequestParam String texto) {
+        return ResponseEntity.ok(direccionService.buscarDireccionesPorTexto(texto));
+    }
+
+    /**
+     * Actualiza las coordenadas geográficas de una dirección.
+     */
+    @PutMapping("/{direccionId}/coordenadas")
+    @Operation(summary = "Actualizar coordenadas", description = "Actualiza las coordenadas geográficas de una dirección.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Coordenadas actualizadas correctamente"),
+        @ApiResponse(responseCode = "404", description = "Dirección no encontrada"),
+        @ApiResponse(responseCode = "400", description = "Coordenadas inválidas")
+    })
+    public ResponseEntity<DireccionDTO> actualizarCoordenadas(
+            @PathVariable UUID direccionId,
+            @RequestParam Double latitud,
+            @RequestParam Double longitud) {
+        DireccionDTO direccionActualizada = direccionService.actualizarCoordenadas(direccionId, latitud, longitud);
+        return ResponseEntity.ok(direccionActualizada);
+    }
+
+    /**
+     * Cuenta el número de direcciones de un receptor.
+     */
+    @GetMapping("/receptor/{receptorId}/contar")
+    @Operation(summary = "Contar direcciones por receptor", description = "Retorna el número de direcciones que tiene un receptor específico.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Conteo realizado correctamente")
+    })
+    public ResponseEntity<Long> contarDireccionesPorReceptor(@PathVariable UUID receptorId) {
+        long count = direccionService.contarDireccionesPorReceptor(receptorId);
+        return ResponseEntity.ok(count);
+    }
+
+    /**
+     * Obtiene direcciones por ciudad y provincia.
+     */
+    @GetMapping("/ubicacion")
+    @Operation(summary = "Obtener direcciones por ciudad y provincia", description = "Retorna direcciones filtradas por ciudad y provincia.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Direcciones filtradas obtenidas correctamente")
+    })
+    public ResponseEntity<List<DireccionDTO>> obtenerDireccionesPorCiudadYProvincia(
+            @RequestParam String ciudad,
+            @RequestParam String provincia) {
+        return ResponseEntity.ok(direccionService.obtenerDireccionesPorCiudadYProvincia(ciudad, provincia));
     }
 }

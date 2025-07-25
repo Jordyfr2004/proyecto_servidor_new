@@ -58,4 +58,28 @@ public interface ReceptorService {
      * @return true si existe, false si no.
      */
     boolean existePorCorreo(String correo);
+
+    /**
+     * Verifica si una cédula ya está registrada.
+     *
+     * @param cedula cédula a verificar.
+     * @return true si existe, false si no.
+     */
+    boolean existePorCedula(String cedula);
+
+    /**
+     * Busca un receptor por su correo electrónico.
+     *
+     * @param correo correo del receptor.
+     * @return ReceptorDTO si existe.
+     */
+    ReceptorDTO obtenerPorCorreo(String correo);
+
+    /**
+     * Busca un receptor por su cédula.
+     *
+     * @param cedula cédula del receptor.
+     * @return ReceptorDTO si existe.
+     */
+    ReceptorDTO obtenerPorCedula(String cedula);
 }

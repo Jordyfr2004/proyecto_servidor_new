@@ -1,5 +1,6 @@
 package com.donacion.modulo2.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.validation.constraints.Email;
@@ -34,6 +35,11 @@ public class ReceptorDTO {
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "El correo debe tener un formato válido")
     private String correo;
+
+    // Listas de IDs de entidades relacionadas (navegación de relaciones)
+    private List<UUID> idsDirecciones;
+    private List<UUID> idsSolicitudes;
+    private List<UUID> idsHistorial;
 
     // Getters y Setters
 
@@ -83,5 +89,29 @@ public class ReceptorDTO {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public List<UUID> getIdsDirecciones() {
+        return idsDirecciones;
+    }
+
+    public void setIdsDirecciones(List<UUID> idsDirecciones) {
+        this.idsDirecciones = idsDirecciones;
+    }
+
+    public List<UUID> getIdsSolicitudes() {
+        return idsSolicitudes;
+    }
+
+    public void setIdsSolicitudes(List<UUID> idsSolicitudes) {
+        this.idsSolicitudes = idsSolicitudes;
+    }
+
+    public List<UUID> getIdsHistorial() {
+        return idsHistorial;
+    }
+
+    public void setIdsHistorial(List<UUID> idsHistorial) {
+        this.idsHistorial = idsHistorial;
     }
 }

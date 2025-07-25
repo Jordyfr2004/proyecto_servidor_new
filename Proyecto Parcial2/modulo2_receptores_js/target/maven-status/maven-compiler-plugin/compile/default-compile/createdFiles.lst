@@ -6,11 +6,13 @@ com\donacion\modulo2\service\impl\EntregaServiceImpl.class
 com\donacion\modulo2\entity\Entrega.class
 com\donacion\modulo2\entity\HistorialReceptor.class
 com\donacion\modulo2\entity\Receptor.class
+com\donacion\modulo2\entity\HistorialReceptor$Estado.class
 com\donacion\modulo2\exception\RecursoNoEncontradoException.class
 com\donacion\modulo2\service\DireccionService.class
 com\donacion\modulo2\controller\HistorialReceptorController.class
 com\donacion\modulo2\service\impl\ReceptorServiceImpl.class
 com\donacion\modulo2\service\ReceptorService.class
+com\donacion\modulo2\entity\HistorialReceptor$TipoEvento.class
 com\donacion\modulo2\dto\SolicitudDTO.class
 com\donacion\modulo2\controller\ReceptorController.class
 com\donacion\modulo2\exception\GlobalExceptionHandler.class

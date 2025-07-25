@@ -110,4 +110,44 @@ public class SolicitudController {
         solicitudService.eliminarSolicitud(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Buscar solicitudes por estado")
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<SolicitudDTO>> buscarPorEstado(@PathVariable String estado) {
+        return ResponseEntity.ok(solicitudService.obtenerPorEstado(estado));
+    }
+
+    @Operation(summary = "Buscar solicitudes por receptor")
+    @GetMapping("/receptor/{receptorId}")
+    public ResponseEntity<List<SolicitudDTO>> buscarPorReceptor(@PathVariable UUID receptorId) {
+        return ResponseEntity.ok(solicitudService.obtenerPorReceptor(receptorId));
+    }
+
+    @Operation(summary = "Buscar solicitudes por tipo de donación")
+    @GetMapping("/tipo/{tipoDonacion}")
+    public ResponseEntity<List<SolicitudDTO>> buscarPorTipoDonacion(@PathVariable String tipoDonacion) {
+        return ResponseEntity.ok(solicitudService.obtenerPorTipoDonacion(tipoDonacion));
+    }
+
+    @Operation(summary = "Cambiar estado de una solicitud")
+    @PutMapping("/{id}/estado/{nuevoEstado}")
+    public ResponseEntity<SolicitudDTO> cambiarEstado(
+            @PathVariable UUID id, 
+            @PathVariable String nuevoEstado) {
+        return ResponseEntity.ok(solicitudService.cambiarEstado(id, nuevoEstado));
+    }
+
+    @Operation(summary = "Contar solicitudes por estado")
+    @GetMapping("/contar/estado/{estado}")
+    public ResponseEntity<Long> contarPorEstado(@PathVariable String estado) {
+        return ResponseEntity.ok(solicitudService.contarPorEstado(estado));
+    }
+
+    @Operation(summary = "Buscar solicitudes por receptor y estado")
+    @GetMapping("/receptor/{receptorId}/estado/{estado}")
+    public ResponseEntity<List<SolicitudDTO>> buscarPorReceptorYEstado(
+            @PathVariable UUID receptorId, 
+            @PathVariable String estado) {
+        return ResponseEntity.ok(solicitudService.obtenerPorReceptorYEstado(receptorId, estado));
+    }
 }
