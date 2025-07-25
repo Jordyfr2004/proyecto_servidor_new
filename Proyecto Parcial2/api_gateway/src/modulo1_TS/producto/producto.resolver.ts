@@ -1,10 +1,13 @@
 import axios from 'axios';
+import 'dotenv/config';
+
+const API_TS_BASE_URL = process.env.API_TS_BASE_URL as string;
 
 export const resolvers = {
   Query: {
     productos: async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/producto');
+        const response = await axios.get(`${API_TS_BASE_URL}/producto`);
         return response.data.map((producto: any) => ({
           id: producto.id_producto,
           nombre: producto.nombre,
@@ -22,7 +25,7 @@ export const resolvers = {
 
     getProducto: async (_: any, { id }: any) => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/producto/${id}`);
+        const response = await axios.get(`${API_TS_BASE_URL}/producto/${id}`);
         const producto = response.data;
         return {
           id: producto.id_producto,
@@ -43,7 +46,7 @@ export const resolvers = {
   Mutation: {
     crearProducto: async (_: any, { input }: any) => {
       try {
-        const response = await axios.post('http://localhost:3000/api/producto', input);
+        const response = await axios.post(`${API_TS_BASE_URL}/producto`, input);
         const producto = response.data;
         return {
           id: producto.id_producto,
@@ -62,7 +65,7 @@ export const resolvers = {
 
     updateProducto: async (_: any, { id, input }: any) => {
       try {
-        const response = await axios.put(`http://localhost:3000/api/producto/${id}`, input);
+        const response = await axios.put(`${API_TS_BASE_URL}/producto/${id}`, input);
         const producto = response.data;
         return {
           id: producto.id_producto,
@@ -81,7 +84,7 @@ export const resolvers = {
 
     deleteProducto: async (_: any, { id }: any) => {
       try {
-        await axios.delete(`http://localhost:3000/api/producto/${id}`);
+        await axios.delete(`${API_TS_BASE_URL}/producto/${id}`);
         return `Producto con ID ${id} eliminado correctamente.`;
       } catch (error) {
         console.error('Error al eliminar producto:', error);

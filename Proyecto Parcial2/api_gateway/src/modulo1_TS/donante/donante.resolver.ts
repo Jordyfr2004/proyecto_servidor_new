@@ -1,10 +1,13 @@
 import axios from 'axios';
+import 'dotenv/config';
+
+const API_TS_BASE_URL = process.env.API_TS_BASE_URL as string;
 
 export const resolvers = {
   Query: {
     donantes: async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/donante');
+        const response = await axios.get(`${API_TS_BASE_URL}/donante`);
         return response.data.map((donante: any) => ({
           id: donante.id_donante,
           nombre: donante.nombre,
@@ -28,7 +31,7 @@ export const resolvers = {
 
     getDonante: async (_: any, { id }: any) => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/donante/${id}`);
+        const response = await axios.get(`${API_TS_BASE_URL}/donante/${id}`);
         const donante = response.data;
         return {
           id: donante.id_donante,
@@ -55,7 +58,7 @@ export const resolvers = {
   Mutation: {
     crearDonante: async (_: any, { input }: any) => {
       try {
-        const response = await axios.post('http://localhost:3000/api/donante', input);
+        const response = await axios.post(`${API_TS_BASE_URL}/donante`, input);
         const donante = response.data;
         return {
           id: donante.id_donante,
@@ -75,7 +78,7 @@ export const resolvers = {
 
     updateDonante: async (_: any, { id, input }: any) => {
       try {
-        const response = await axios.put(`http://localhost:3000/api/donante/${id}`, input);
+        const response = await axios.put(`${API_TS_BASE_URL}/donante/${id}`, input);
         const donante = response.data;
         return {
           id: donante.id_donante,
@@ -100,7 +103,7 @@ export const resolvers = {
 
     deleteDonante: async (_: any, { id }: any) => {
       try {
-        await axios.delete(`http://localhost:3000/api/donante/${id}`);
+        await axios.delete(`${API_TS_BASE_URL}/donante/${id}`);
         return `Donante con ID ${id} eliminado correctamente.`;
       } catch (error) {
         console.error('Error al eliminar donante:', error);

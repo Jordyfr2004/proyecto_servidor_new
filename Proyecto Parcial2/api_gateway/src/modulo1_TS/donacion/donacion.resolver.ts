@@ -1,10 +1,13 @@
 import axios from 'axios';
+import 'dotenv/config';
+
+const API_TS_BASE_URL = process.env.API_TS_BASE_URL as string;
 
 export const resolvers = {
   Query: {
     donaciones: async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/donacion');
+        const response = await axios.get(`${API_TS_BASE_URL}/donacion`);
         return response.data.map((donacion: any) => ({
           id: donacion.id_donacion,
           fecha: donacion.fecha,
@@ -22,7 +25,7 @@ export const resolvers = {
 
     getDonacion: async (_: any, { id }: any) => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/donacion/${id}`);
+        const response = await axios.get(`${API_TS_BASE_URL}/donacion/${id}`);
         const donacion = response.data;
         return {
           id: donacion.id_donacion,
@@ -43,7 +46,7 @@ export const resolvers = {
   Mutation: {
     crearDonacion: async (_: any, { input }: any) => {
       try {
-        const response = await axios.post('http://localhost:3000/api/donacion', input);
+        const response = await axios.post(`${API_TS_BASE_URL}/donacion`, input);
         const donacion = response.data;
         return {
           id: donacion.id_donacion,
@@ -62,7 +65,7 @@ export const resolvers = {
 
     updateDonacion: async (_: any, { id, input }: any) => {
       try {
-        const response = await axios.put(`http://localhost:3000/api/donacion/${id}`, input);
+        const response = await axios.put(`${API_TS_BASE_URL}/donacion/${id}`, input);
         const donacion = response.data;
         return {
           id: donacion.id_donacion,
@@ -81,7 +84,7 @@ export const resolvers = {
 
     deleteDonacion: async (_: any, { id }: any) => {
       try {
-        await axios.delete(`http://localhost:3000/api/donacion/${id}`);
+        await axios.delete(`${API_TS_BASE_URL}/donacion/${id}`);
         return `Donación con ID ${id} eliminada correctamente.`;
       } catch (error) {
         console.error('Error al eliminar donación:', error);
