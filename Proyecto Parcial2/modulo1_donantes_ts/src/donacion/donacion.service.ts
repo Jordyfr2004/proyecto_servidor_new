@@ -7,6 +7,7 @@ import { UpdateDonacionDto } from './dto/update-donacion.dto';
 import { Donante } from 'src/donante/entities/donante.entity';
 import { Producto } from 'src/producto/entities/producto.entity';
 import { EstadoDonacion } from 'src/estado-donacion/entities/estado-donacion.entity';
+import axios from 'axios'; // 👈 AÑADIDO
 
 @Injectable()
 export class DonacionService {
@@ -56,7 +57,20 @@ export class DonacionService {
       estado,
     });
 
-    return this.donacionRepo.save(nueva);
+    const donacionGuardada = await this.donacionRepo.save(nueva);
+
+    // 👇 Enviar notificación al WebSocket
+    try {
+      await axios.post('http://localhost:3001/notificar', {
+        evento: 'nueva_donacion',
+        mensaje: `Donación registrada por ${donante.nombre}, cantidad: ${dto.cantidad}`,
+        fecha: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error('Error al enviar notificación WebSocket:', error.message);
+    }
+
+    return donacionGuardada;
   }
 
   findAll(): Promise<Donacion[]> {

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Donante } from './entities/donante.entity';
 import { CreateDonanteDto } from './dto/create-donante.dto';
 import { UpdateDonanteDto } from './dto/update-donante.dto';
+import axios from 'axios'; // 👈 AÑADIDO
 
 @Injectable()
 export class DonanteService {
@@ -12,12 +13,26 @@ export class DonanteService {
     private donanteRepository: Repository<Donante>,
   ) {}
 
-  create(dto: CreateDonanteDto): Promise<Donante> {
+  async create(dto: CreateDonanteDto): Promise<Donante> {
     const nuevo = this.donanteRepository.create({
       ...dto,
       fecha_registro: new Date(dto.fecha_registro),
     });
-    return this.donanteRepository.save(nuevo);
+
+    const donanteGuardado = await this.donanteRepository.save(nuevo);
+
+    // 👇 Enviar notificación al WebSocket
+    try {
+      await axios.post('http://localhost:3001/notificar', {
+        evento: 'nuevo_donante',
+        mensaje: `Nuevo donante registrado: ${donanteGuardado.nombre}`,
+        fecha: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error('Error al enviar notificación WebSocket:', error.message);
+    }
+
+    return donanteGuardado;
   }
 
   findAll(): Promise<Donante[]> {

@@ -5,6 +5,7 @@ import { Producto } from './entities/producto.entity';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
 import { TipoProducto } from 'src/tipo-producto/entities/tipo-producto.entity';
+import axios from 'axios'; // 👈 AÑADIDO
 
 @Injectable()
 export class ProductoService {
@@ -21,7 +22,20 @@ export class ProductoService {
     if (!tipo) throw new NotFoundException('Tipo de producto no encontrado');
 
     const nuevo = this.productoRepo.create({ ...dto, tipo });
-    return this.productoRepo.save(nuevo);
+    const productoGuardado = await this.productoRepo.save(nuevo);
+
+    // 👇 Enviar notificación al WebSocket
+    try {
+      await axios.post('http://localhost:3001/notificar', {
+        evento: 'nuevo_producto',
+        mensaje: `Nuevo producto registrado: ${productoGuardado.nombre}, stock: ${productoGuardado.stock}`,
+        fecha: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error('Error al enviar notificación WebSocket:', error.message);
+    }
+
+    return productoGuardado;
   }
 
   findAll(): Promise<Producto[]> {

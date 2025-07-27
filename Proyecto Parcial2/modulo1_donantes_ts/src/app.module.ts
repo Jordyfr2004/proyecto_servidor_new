@@ -5,6 +5,9 @@ import { DonacionModule } from './donacion/donacion.module';
 import { ProductoModule } from './producto/producto.module';
 import { TipoProductoModule } from './tipo-producto/tipo-producto.module';
 import { EstadoDonacionModule } from './estado-donacion/estado-donacion.module';
+import { AuthModule } from './auth/auth.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { Usuario } from './usuario/entities/usuario';
 
 @Module({
   imports: [
@@ -15,17 +18,19 @@ import { EstadoDonacionModule } from './estado-donacion/estado-donacion.module';
       username: 'postgres.lydoverphmjredhskzzw',
       password: 'nd#vqZUHM5_zE.X',
       database: 'postgres',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [Usuario, __dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
       },
     }),
-    DonanteModule, 
-    DonacionModule, 
-    ProductoModule, 
-    TipoProductoModule, 
+    DonanteModule,
+    DonacionModule,
+    ProductoModule,
+    TipoProductoModule,
     EstadoDonacionModule,
+    AuthModule,
+    UsuarioModule,
   ],
 })
 export class AppModule {}
