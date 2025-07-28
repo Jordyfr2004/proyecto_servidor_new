@@ -1,6 +1,10 @@
 
+
+// --- INICIO CAMBIO: Notificación WebSocket en POST (crearReceptor) ---
 import axios from 'axios';
 import 'dotenv/config';
+import { emitirNotificacionWebSocket } from '../../notificaciones'; // Importa la función para emitir notificaciones
+// --- FIN CAMBIO ---
 
 const API_JAVA_URL = process.env.API_JAVA_URL as string;
 const API_URL = `${API_JAVA_URL}/receptores`;
@@ -66,6 +70,12 @@ export const resolvers = {
         console.log('Datos enviados al servidor Java:', JSON.stringify(input, null, 2));
         const res = await axios.post(API_URL, input);
         const r = res.data;
+        // --- INICIO CAMBIO: Emitir notificación WebSocket solo en POST ---
+        emitirNotificacionWebSocket({
+          tipo: 'nuevo_receptor',
+          data: r
+        });
+        // --- FIN CAMBIO ---
         return {
           id: r.idReceptor,
           nombre: r.nombre,

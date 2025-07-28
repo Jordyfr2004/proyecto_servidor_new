@@ -1,6 +1,10 @@
 
+
+// --- INICIO CAMBIO: Notificación WebSocket en POST (crearEntrega) ---
 import axios from 'axios';
 import 'dotenv/config';
+import { emitirNotificacionWebSocket } from '../../notificaciones'; // Importa la función para emitir notificaciones
+// --- FIN CAMBIO ---
 
 const API_JAVA_URL = process.env.API_JAVA_URL as string;
 const API_URL = `${API_JAVA_URL}/entregas`;
@@ -42,6 +46,12 @@ export const resolvers = {
       try {
         const res = await axios.post(API_URL, input);
         const e = res.data;
+        // --- INICIO CAMBIO: Emitir notificación WebSocket solo en POST ---
+        emitirNotificacionWebSocket({
+          tipo: 'nueva_entrega',
+          data: e
+        });
+        // --- FIN CAMBIO ---
         return {
           id: e.idEntrega,
           fechaEntrega: e.fechaEntrega,
