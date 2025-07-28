@@ -1,4 +1,6 @@
 import bcrypt
+import requests
+from datetime import datetime
 from app.Domain.Dtos.createAdminDto.createAdminDto import CreateAdminDTO
 from app.Domain.entities.administrador.adminEntitie import Admin
 from app.Domain.Interfaces.adminInterfaz.adminterfaz import AdminInterface
@@ -22,4 +24,16 @@ class CreateAdminUseCase:
             correo=dto.correo,
             password=hashed_password_str
         )
-        return self.admin_repository.create(nuevo_admin)
+        admin_creado = self.admin_repository.create(nuevo_admin)
+
+        # 👇 Enviar notificación al WebSocket
+        try:
+            requests.post('http://localhost:3001/notificar', json={
+                'evento': 'nuevo_administrador',
+                'mensaje': f'Nuevo administrador registrado: {admin_creado.nombre}',
+                'fecha': datetime.now().isoformat()
+            })
+        except Exception as error:
+            print(f'Error al enviar notificación WebSocket: {str(error)}')
+
+        return admin_creado

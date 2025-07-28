@@ -20,13 +20,13 @@ admin_bp.route("/login", methods=["POST"])(admin_controller.login_admin)
 
 admin_bp.route("/all", methods=["GET"])(token_required(admin_controller.get_all_admins))
 admin_bp.route("/ver/<int:admin_id>", methods=["GET"])(token_required(admin_controller.get_admin_by_id))
-admin_bp.route("/Crear", methods=["POST"])(token_required(admin_controller.create_admin))
+admin_bp.route("/Crear", methods=["POST"])(admin_controller.create_admin)
 admin_bp.route("/<int:admin_id>",methods=["PUT"])(token_required(admin_controller.update_admin))
 admin_bp.route("/<int:admin_id>", methods=["DELETE"])(token_required(admin_controller.delete_admin))
 
 admin_bp.route("/agenda", methods=["GET"])(token_required(agenda_controller.get_all_agendas))
 admin_bp.route("/agenda/<int:agenda_id>", methods=["GET"])(token_required(agenda_controller.get_agenda_by_id))
-admin_bp.route("/agenda/Crear/", methods=["POST"])(token_required(agenda_controller.create_agenda))
+admin_bp.route("/agenda/Crear", methods=["POST"])(token_required(agenda_controller.create_agenda))
 admin_bp.route("/<int:agenda_id>", methods=["PUT"])(token_required(agenda_controller.update_agenda))
 admin_bp.route("/agenda/delete/<int:agenda_id>", methods=["DELETE"])(token_required(agenda_controller.delete_agenda))
 
