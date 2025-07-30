@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HttpModule } from '@nestjs/axios'; // 👈 Importante
+
 import { DonanteModule } from './donante/donante.module';
 import { DonacionModule } from './donacion/donacion.module';
 import { ProductoModule } from './producto/producto.module';
@@ -8,6 +10,7 @@ import { EstadoDonacionModule } from './estado-donacion/estado-donacion.module';
 import { AuthModule } from './auth/auth.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { Usuario } from './usuario/entities/usuario';
+import { ResumenDonacionModule } from './resumen-donacion/resumen-donacion.module';
 
 @Module({
   imports: [
@@ -24,6 +27,7 @@ import { Usuario } from './usuario/entities/usuario';
         rejectUnauthorized: false,
       },
     }),
+    HttpModule, // 👈 Asegúrate de que esté aquí
     DonanteModule,
     DonacionModule,
     ProductoModule,
@@ -31,6 +35,7 @@ import { Usuario } from './usuario/entities/usuario';
     EstadoDonacionModule,
     AuthModule,
     UsuarioModule,
+    ResumenDonacionModule,
   ],
 })
 export class AppModule {}
