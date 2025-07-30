@@ -28,7 +28,7 @@ El agente inteligente tiene como objetivo:
 ### 1. Clonar y preparar entorno
 
 ```bash
-git clone <repositorio>
+git clone https://github.com/Jordyfr2004/proyecto_servidor_new.git
 cd modulo1_donantes_ts
 npm install
 ```
